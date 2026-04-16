@@ -5,7 +5,7 @@ medium: "for violin, cello, bass clarinet, piano"
 types: [composition, score]
 summary: "Chamber piece for violin, cello, bass clarinet, and piano. Flowing, non-hierarchical organization — congealing, dissipating, hovering between the two."
 sortOrder: 65
-thumbnail: "/images/noctilucent-veils/01-score.png"
+thumbnail: "/images/noctilucent-veils/hero.png"
 scorePdf: "/scores/noctilucent-veils.pdf"
 images:
   - "/images/noctilucent-veils/01-score.png"

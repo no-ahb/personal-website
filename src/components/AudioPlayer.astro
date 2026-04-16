@@ -134,11 +134,13 @@ const { src, title } = Astro.props;
         audio.addEventListener('loadedmetadata', () => {
           timeEl.textContent = `0:00 / ${fmt(audio!.duration)}`;
         });
+        audio.addEventListener('pause', markStop);
         audio.addEventListener('ended', () => {
           player.classList.remove('playing');
           filled.style.width = '0%';
           audio!.currentTime = 0;
           timeEl.textContent = `0:00 / ${fmt(audio!.duration)}`;
+          fireDuration('ended');
         });
       }
       return audio;
@@ -146,6 +148,28 @@ const { src, title } = Astro.props;
 
     const title = player.dataset.title || '';
     let trackedPlay = false;
+    let playStartedAt = 0;
+    let totalMs = 0;
+    let durationFired = false;
+
+    function markPlay() { if (playStartedAt === 0) playStartedAt = Date.now(); }
+    function markStop() {
+      if (playStartedAt !== 0) {
+        totalMs += Date.now() - playStartedAt;
+        playStartedAt = 0;
+      }
+    }
+    function fireDuration(reason: string) {
+      if (durationFired) return;
+      markStop();
+      if (totalMs < 3000) return;
+      durationFired = true;
+      const dur = audio?.duration || 0;
+      const seconds = Math.round(totalMs / 1000);
+      const pct = dur ? Math.min(100, Math.round((totalMs / 1000 / dur) * 100)) : 0;
+      (window as any).umami?.track?.('audio-end', { title, seconds, pct, reason });
+    }
+    window.addEventListener('pagehide', () => fireDuration('leave'));
 
     playBtn.addEventListener('click', () => {
       const a = ensureAudio();
@@ -156,6 +180,7 @@ const { src, title } = Astro.props;
             trackedPlay = true;
             (window as any).umami?.track?.('audio-play', { title });
           }
+          markPlay();
           tick();
         }).catch(() => {});
       } else {

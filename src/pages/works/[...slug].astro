@@ -148,6 +148,7 @@ const jsonLd = {
                 aria-label={`Play ${work.data.title} video`}
                 data-umami-event="video-play"
                 data-umami-event-work={work.data.title}
+                data-umami-event-video-id={youtubeId(work.data.video)}
               >
                 <span class="yt-play" aria-hidden="true">
                   <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
@@ -181,6 +182,7 @@ const jsonLd = {
                     aria-label={`Play ${work.data.title} video ${i + 1}`}
                     data-umami-event="video-play"
                     data-umami-event-work={work.data.title}
+                    data-umami-event-video-id={youtubeId(v.url)}
                   >
                     <span class="yt-play" aria-hidden="true">
                       <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
