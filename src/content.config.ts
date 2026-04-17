@@ -20,6 +20,8 @@ const works = defineCollection({
     })).default([]),
     bandcamp: z.string().optional(),
     bandcampHeight: z.number().default(120),
+    bandcampLayout: z.enum(['square', 'horizontal']).default('square'),
+    bandcampNote: z.string().optional(),
     audioFile: z.string().optional(),
     audioNote: z.string().optional(),
     audioFiles: z.array(z.object({

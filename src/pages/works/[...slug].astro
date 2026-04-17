@@ -221,14 +221,19 @@ const jsonLd = {
         </script>
 
         {work.data.bandcamp && (
-          <div class="bandcamp-embed">
-            <iframe
-              src={work.data.bandcamp}
-              title={`${work.data.title} on Bandcamp`}
-              style={`border: 0; width: 100%; height: ${work.data.bandcampHeight}px;`}
-              loading="lazy"
-              allow="autoplay"
-            ></iframe>
+          <div class={`bandcamp-wrap bandcamp-wrap--${work.data.bandcampLayout}`}>
+            {work.data.bandcampNote && (
+              <p class="bandcamp-note">{work.data.bandcampNote}</p>
+            )}
+            <div class={`bandcamp-embed bandcamp-embed--${work.data.bandcampLayout}`}>
+              <iframe
+                src={work.data.bandcamp}
+                title={`${work.data.title} on Bandcamp`}
+                style={`border: 0; width: 100%; height: ${work.data.bandcampHeight}px;`}
+                loading="lazy"
+                allow="autoplay"
+              ></iframe>
+            </div>
           </div>
         )}
 

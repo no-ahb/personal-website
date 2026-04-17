@@ -7,6 +7,10 @@ summary: "Nine piano wires suspended by lead weights, vibrating through electrom
 sortOrder: 100
 video: "https://www.youtube.com/embed/zL6Vuksp54k"
 videoType: youtube
+bandcamp: "https://bandcamp.com/EmbeddedPlayer/track=162657977/size=large/bgcol=ffffff/linkcol=333333/artwork=big/tracklist=false/transparent=false/"
+bandcampHeight: 470
+bandcampLayout: square
+bandcampNote: "Below is a one-hour recording of the installation at night during a rainstorm, which you can faintly hear at the edges of the recording. The recording was made with a simple ORTF Neumann KM184 stereo pair in the center of the room. Although no one was in the space, the building creaks, clicks, and groans sporadically."
 videoPreview: "/images/suspension/preview.mp4"
 thumbnail: "/images/suspension/01-hero.jpeg"
 images:
