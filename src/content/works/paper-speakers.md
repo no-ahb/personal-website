@@ -8,8 +8,8 @@ sortOrder: 75
 thumbnail: "/images/paper-speakers/02-detail.jpeg"
 videoPreview: "/images/paper-speakers/preview.mp4"
 videosBelow:
-  - url: "https://www.youtube.com/embed/AmKUxCNXGBM"
-    type: youtube
+  - url: "/videos/paper-speakers-1.mp4"
+    type: local
 images:
   - "/images/paper-speakers/02-detail.jpeg"
   - "/images/paper-speakers/01-hero.jpg"

@@ -397,7 +397,17 @@ hr {
   margin-top: 4vh;
   margin-bottom: 1rem;
 }
-.yt-facade {
+.work-video iframe,
+.work-video video {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: 0;
+  display: block;
+}
+.work-video { background: #000; }
+
+.video-facade {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -414,24 +424,17 @@ hr {
   align-items: center;
   justify-content: center;
 }
-.yt-play {
+.video-play {
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0.85;
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
-.yt-facade:hover .yt-play,
-.yt-facade:focus-visible .yt-play {
+.video-facade:hover .video-play,
+.video-facade:focus-visible .video-play {
   opacity: 1;
   transform: scale(1.06);
-}
-
-.work-video iframe {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  border: 0;
 }
 
 .work-scroll-track img {

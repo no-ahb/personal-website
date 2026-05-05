@@ -16,7 +16,7 @@ const works = defineCollection({
     videoType: z.enum(['vimeo', 'youtube']).optional(),
     videosBelow: z.array(z.object({
       url: z.string(),
-      type: z.enum(['vimeo', 'youtube']),
+      type: z.enum(['vimeo', 'youtube', 'local']),
     })).default([]),
     bandcamp: z.string().optional(),
     bandcampHeight: z.number().default(120),

@@ -5,11 +5,34 @@ interface Props {
 }
 
 import { asset } from '../lib/asset';
+import { execFileSync } from 'node:child_process';
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 const { src, title } = Astro.props;
+
+function fmtDuration(secs: number): string {
+  if (!isFinite(secs) || secs <= 0) return '0:00';
+  const m = Math.floor(secs / 60);
+  const s = Math.floor(secs % 60).toString().padStart(2, '0');
+  return `${m}:${s}`;
+}
+
+let preDuration = '0:00';
+try {
+  const filePath = resolve('public', src.replace(/^\//, ''));
+  if (existsSync(filePath)) {
+    const out = execFileSync(
+      'ffprobe',
+      ['-v', 'error', '-show_entries', 'format=duration', '-of', 'default=nw=1:nk=1', filePath],
+      { encoding: 'utf8' }
+    ).trim();
+    preDuration = fmtDuration(parseFloat(out));
+  }
+} catch {}
 ---
 
-<div class="audio-player" data-src={asset(src)} data-title={title}>
+<div class="audio-player" data-src={asset(src)} data-title={title} data-duration={preDuration}>
   <button class="audio-player-play" aria-label="Play">
     <svg class="icon-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
       <polygon points="6 3 20 12 6 21 6 3" />
@@ -26,7 +49,7 @@ const { src, title } = Astro.props;
     </div>
   </div>
 
-  <span class="audio-player-time">0:00 / 0:00</span>
+  <span class="audio-player-time">0:00 / {preDuration}</span>
 </div>
 
 <style>

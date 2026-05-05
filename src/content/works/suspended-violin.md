@@ -7,6 +7,7 @@ summary: "Audiovisual piece reconstructing the violin from fragments. Video spir
 sortOrder: 30
 video: "https://player.vimeo.com/video/524830300?h=e47a3f36ad&title=0&byline=0&portrait=0"
 videoType: vimeo
+
 thumbnail: "/images/suspended-violin/01-pointcloud.jpg"
 images: []
 exhibitions:

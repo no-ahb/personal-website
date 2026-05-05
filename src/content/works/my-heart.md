@@ -7,6 +7,7 @@ summary: "Audiovisual piece for ten screens and eight speakers. Point cloud citi
 sortOrder: 35
 video: "https://www.youtube.com/embed/To2irZvWUgw"
 videoType: youtube
+
 thumbnail: "/images/my-heart/01-pointcloud.jpg"
 images: []
 exhibitions:

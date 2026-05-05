@@ -18,8 +18,8 @@ exhibitions:
     location: "London, UK"
     year: "2021"
 videosBelow:
-  - url: "https://www.youtube.com/embed/AkYv9E6U5Yw"
-    type: youtube
+  - url: "/videos/not-here-1.mp4"
+    type: local
 draft: false
 ---
 

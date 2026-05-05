@@ -24,6 +24,11 @@ function youtubeId(url: string): string {
   return m ? m[1] : '';
 }
 
+/** True if the URL points at a local file (starts with /) rather than a third-party embed. */
+function isLocalVideo(url: string): boolean {
+  return url.startsWith('/');
+}
+
 const { work } = Astro.props;
 const { Content } = await render(work);
 const siteUrl = Astro.site?.origin ?? 'https://noahberrie.com';
@@ -139,18 +144,35 @@ const jsonLd = {
 
         {work.data.video && (
           <div class="work-video">
-            {youtubeId(work.data.video) ? (
+            {isLocalVideo(work.data.video) ? (
               <button
-                class="yt-facade"
+                class="video-facade"
                 type="button"
-                data-embed-src={`${privacyEmbed(work.data.video)}?autoplay=1&rel=0&modestbranding=1`}
+                data-local-src={asset(work.data.video)}
+                style={workImage ? `background-image: url(${asset(workImage)})` : undefined}
+                aria-label={`Play ${work.data.title} video`}
+                data-umami-event="video-play"
+                data-umami-event-work={work.data.title}
+              >
+                <span class="video-play" aria-hidden="true">
+                  <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
+                    <circle cx="36" cy="36" r="34" fill="rgba(0,0,0,0.55)" stroke="rgba(255,255,255,0.9)" stroke-width="1.25"/>
+                    <polygon points="29,24 51,36 29,48" fill="rgba(255,255,255,0.95)"/>
+                  </svg>
+                </span>
+              </button>
+            ) : youtubeId(work.data.video) ? (
+              <button
+                class="video-facade"
+                type="button"
+                data-yt-src={`${privacyEmbed(work.data.video)}?autoplay=1&rel=0&modestbranding=1`}
                 style={workImage ? `background-image: url(${asset(workImage)})` : undefined}
                 aria-label={`Play ${work.data.title} video`}
                 data-umami-event="video-play"
                 data-umami-event-work={work.data.title}
                 data-umami-event-video-id={youtubeId(work.data.video)}
               >
-                <span class="yt-play" aria-hidden="true">
+                <span class="video-play" aria-hidden="true">
                   <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
                     <circle cx="36" cy="36" r="34" fill="rgba(0,0,0,0.55)" stroke="rgba(255,255,255,0.9)" stroke-width="1.25"/>
                     <polygon points="29,24 51,36 29,48" fill="rgba(255,255,255,0.95)"/>
@@ -173,18 +195,35 @@ const jsonLd = {
           <div class="work-videos-below">
             {work.data.videosBelow.map((v, i) => (
               <div class="work-video">
-                {v.type === 'youtube' && youtubeId(v.url) ? (
+                {isLocalVideo(v.url) ? (
                   <button
-                    class="yt-facade"
+                    class="video-facade"
                     type="button"
-                    data-embed-src={`${privacyEmbed(v.url)}?autoplay=1&rel=0&modestbranding=1`}
+                    data-local-src={asset(v.url)}
+                    style={workImage ? `background-image: url(${asset(workImage)})` : undefined}
+                    aria-label={`Play ${work.data.title} video ${i + 1}`}
+                    data-umami-event="video-play"
+                    data-umami-event-work={work.data.title}
+                  >
+                    <span class="video-play" aria-hidden="true">
+                      <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
+                        <circle cx="36" cy="36" r="34" fill="rgba(0,0,0,0.55)" stroke="rgba(255,255,255,0.9)" stroke-width="1.25"/>
+                        <polygon points="29,24 51,36 29,48" fill="rgba(255,255,255,0.95)"/>
+                      </svg>
+                    </span>
+                  </button>
+                ) : v.type === 'youtube' && youtubeId(v.url) ? (
+                  <button
+                    class="video-facade"
+                    type="button"
+                    data-yt-src={`${privacyEmbed(v.url)}?autoplay=1&rel=0&modestbranding=1`}
                     style={workImage ? `background-image: url(${asset(workImage)})` : undefined}
                     aria-label={`Play ${work.data.title} video ${i + 1}`}
                     data-umami-event="video-play"
                     data-umami-event-work={work.data.title}
                     data-umami-event-video-id={youtubeId(v.url)}
                   >
-                    <span class="yt-play" aria-hidden="true">
+                    <span class="video-play" aria-hidden="true">
                       <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
                         <circle cx="36" cy="36" r="34" fill="rgba(0,0,0,0.55)" stroke="rgba(255,255,255,0.9)" stroke-width="1.25"/>
                         <polygon points="29,24 51,36 29,48" fill="rgba(255,255,255,0.95)"/>
@@ -206,16 +245,28 @@ const jsonLd = {
         )}
 
         <script is:inline>
-          document.querySelectorAll('.yt-facade').forEach((btn) => {
+          document.querySelectorAll('.video-facade').forEach((btn) => {
             btn.addEventListener('click', () => {
-              const src = btn.getAttribute('data-embed-src');
-              if (!src) return;
-              const iframe = document.createElement('iframe');
-              iframe.src = src;
-              iframe.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; gyroscope; accelerometer');
-              iframe.setAttribute('allowfullscreen', '');
-              iframe.title = btn.getAttribute('aria-label') || '';
-              btn.replaceWith(iframe);
+              const local = btn.getAttribute('data-local-src');
+              const yt = btn.getAttribute('data-yt-src');
+              if (local) {
+                const v = document.createElement('video');
+                v.src = local;
+                v.controls = true;
+                v.autoplay = true;
+                v.playsInline = true;
+                v.preload = 'metadata';
+                v.title = btn.getAttribute('aria-label') || '';
+                btn.replaceWith(v);
+                v.play?.().catch(() => {});
+              } else if (yt) {
+                const iframe = document.createElement('iframe');
+                iframe.src = yt;
+                iframe.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; gyroscope; accelerometer');
+                iframe.setAttribute('allowfullscreen', '');
+                iframe.title = btn.getAttribute('aria-label') || '';
+                btn.replaceWith(iframe);
+              }
             });
           });
         </script>

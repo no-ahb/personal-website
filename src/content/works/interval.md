@@ -8,8 +8,8 @@ sortOrder: 85
 thumbnail: "/images/interval/02-gallery-wide.jpg"
 videoPreview: "/images/interval/preview.mp4"
 videosBelow:
-  - url: "https://www.youtube.com/embed/kppn2LgYeH0"
-    type: youtube
+  - url: "/videos/interval-1.mp4"
+    type: local
 images:
   - "/images/interval/02-gallery-wide.jpg"
   - "/images/interval/01-hero.jpeg"

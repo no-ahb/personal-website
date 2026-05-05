@@ -14,8 +14,8 @@ images:
   - "/images/mirror/04-cables-gallery.jpg"
   - "/images/mirror/06-doorway.jpg"
 videosBelow:
-  - url: "https://www.youtube.com/embed/L5mH_PFA9hk"
-    type: youtube
+  - url: "/videos/mirror-1.mp4"
+    type: local
 exhibitions:
   - venue: "Sarabande Foundation"
     location: "London, UK"
