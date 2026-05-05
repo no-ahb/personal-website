@@ -13,6 +13,7 @@
     "astro": "^5.18.1"
   },
   "devDependencies": {
+    "music-metadata": "^11.12.3",
     "sharp": "^0.34.5"
   }
 }

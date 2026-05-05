@@ -7,9 +7,9 @@ interface Props {
 }
 
 import { asset } from '../lib/asset';
-import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { parseFile } from 'music-metadata';
 
 const { src, title, work, clip } = Astro.props;
 
@@ -24,12 +24,8 @@ let preDuration = '0:00';
 try {
   const filePath = resolve('public', src.replace(/^\//, ''));
   if (existsSync(filePath)) {
-    const out = execFileSync(
-      'ffprobe',
-      ['-v', 'error', '-show_entries', 'format=duration', '-of', 'default=nw=1:nk=1', filePath],
-      { encoding: 'utf8' }
-    ).trim();
-    preDuration = fmtDuration(parseFloat(out));
+    const { format } = await parseFile(filePath, { duration: true });
+    if (format.duration) preDuration = fmtDuration(format.duration);
   }
 } catch {}
 ---
